@@ -9,19 +9,17 @@ namespace BlockChainSecurity
 {
     public class BlockChain
     {
-        IProofOfWorkAlgorithm _proofOfWorkAlg;
-        public List<Block> Chain { get; private set; }
+        public static IProofOfWorkAlgorithm ProofOfWorkAlgorithm { get; private set; }
+        public List<Block> Chain { get; set; }
 
         // Goes in to the next mined block. 
         public List<Transaction> CurrentTransactions { get; private set; }
 
-        int index;
-
-        public BlockChain()
+        public BlockChain(IProofOfWorkAlgorithm proofOfWorkAlgorithm)
         {
-            index = 0;
             this.CurrentTransactions = new List<Transaction>();
             this.Chain = new List<Block>();
+            ProofOfWorkAlgorithm = proofOfWorkAlgorithm;
 
             //Create Genesis Block
             NewBlock(100, "1");            
@@ -32,7 +30,7 @@ namespace BlockChainSecurity
             var block = new Block(this.Chain.Count + 1, 
                                   this.CurrentTransactions, 
                                   proof, 
-                                  previousHash == "" ? Hash(Chain.Last()) : previousHash);
+                                  previousHash == "" ? Chain.Last().Hash() : previousHash);
             //Reset transactions
             this.CurrentTransactions = new List<Transaction>();
             this.Chain.Add(block);
@@ -48,15 +46,43 @@ namespace BlockChainSecurity
             return LastBlock().Index + 1;
         }
 
-        private static string Hash(Block block)
-        {
-            var message = Encoding.ASCII.GetBytes(block.ToJson());
-            return Hashing.Hash(message);
-        }
-
         public Block LastBlock()
         {
             return this.Chain.Last();
+        }
+
+        /// <summary>
+        /// Determine if the given blockchain is valid.
+        /// </summary>
+        /// <param name="chain"></param>
+        /// <returns></returns>
+        public static bool ValidChain(List<Block> chain)
+        {
+            var previousBlock = chain.ElementAt(0);
+            var currentIndex = 1;
+
+            while(currentIndex < chain.Count)
+            {
+                var block = chain.ElementAt(currentIndex);
+
+                //Check that hash is correct
+                if(!block.PreviousHash.SequenceEqual(previousBlock.Hash()))
+                {
+                    return false;
+                }
+
+                //Check that proof of work is correct
+                if(!ProofOfWorkAlgorithm.ValidateProof(previousBlock.Proof, block.Proof))
+                {
+                    return false;
+                }
+
+                //Next block
+                previousBlock = block;
+                currentIndex++;
+            }
+
+            return true;
         }
     }
 }

@@ -182,7 +182,10 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\ConsensusResponse.cs" />
     <Compile Include="Models\MineResult.cs" />
+    <Compile Include="Models\RegisterNodeRequest.cs" />
+    <Compile Include="Models\RegisterNodeResponse.cs" />
     <Compile Include="Models\TransactionRequest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

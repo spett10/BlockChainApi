@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using System.Text;
 
 namespace BlockChainSecurity
 {
@@ -29,6 +30,12 @@ namespace BlockChainSecurity
         public string ToJson()
         {
             return JsonConvert.SerializeObject(this);
+        }
+
+        public string Hash()
+        {
+            var message = Encoding.ASCII.GetBytes(this.ToJson());
+            return Hashing.Hash(message);
         }
     }
 }
