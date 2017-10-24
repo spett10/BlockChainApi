@@ -27,7 +27,8 @@ namespace BlockChainSecurity
 
         public Block NewBlock(int proof, string previousHash = "")
         {
-            var block = new Block(this.Chain.Count + 1, 
+            var block = new Block(this.Chain.Count + 1,
+                                  DateTime.Now.ToUnixTimeStamp(),
                                   this.CurrentTransactions, 
                                   proof, 
                                   previousHash == "" ? Chain.Last().Hash() : previousHash);
@@ -66,7 +67,8 @@ namespace BlockChainSecurity
                 var block = chain.ElementAt(currentIndex);
 
                 //Check that hash is correct
-                if(!block.PreviousHash.SequenceEqual(previousBlock.Hash()))
+                var reHash = previousBlock.Hash();
+                if(!block.PreviousHash.SequenceEqual(reHash))
                 {
                     return false;
                 }

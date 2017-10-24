@@ -1,0 +1,11 @@
+﻿to host manually with iisexpress do the following in the command:
+
+iisexpress /config:"C:\Users\Soren\Documents\Visual Studio 2017\Projects\BlockChainApi\.vs\config\applicationhost.config" /site:BlockChainApi
+
+the trick is that viusal studio 2015+ puts the config file in a hidden subfolder .vs, thats why the site didnt show up in the iisexpress applicationhost.config file! sneaky. 
+
+After you host it like the above, then you can run it in debug with vs as well, just use another port and create virutal directory, then you have one running through vs and the other hosted individually
+with iisexpress, then you should be able to register one with the other and test the consensus algorithm 
+
+
+think we need to rebuild and publish in order for the iisexpress command line to fetch the correct version? not sure if publish is needed, since we point to root of project, not the folder. 

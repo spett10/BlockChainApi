@@ -1,15 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using BlockChainSecurity;
-using Newtonsoft;
 using System.Web.Http;
 using System.Web.Http.Results;
-using System.Collections.Specialized;
-using System.Net.Http.Formatting;
 using BlockChainApi.Models;
-using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -125,7 +119,7 @@ namespace BlockChainApi.Controllers
         [Route("api/nodes/register")]
         public IHttpActionResult RegisterNode([FromBody] RegisterNodeRequest request)
         {
-            if(request.Nodes.Count < 1)
+            if (request.Nodes.Count < 1)
             {
                 return BadRequest("Please supply valid list of nodes");
             }
