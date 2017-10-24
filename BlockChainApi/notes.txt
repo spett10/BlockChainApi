@@ -9,3 +9,10 @@ with iisexpress, then you should be able to register one with the other and test
 
 
 think we need to rebuild and publish in order for the iisexpress command line to fetch the correct version? not sure if publish is needed, since we point to root of project, not the folder. 
+
+TODO:
+
+-The mine endpoint is kinda silly - for a realistic PoW algortihm, the get would timeout every time (it would take several hours if not days to mine).
+	-The solution would be to have a poll endpoint, and return a poll url in a mine request. Then when u hit the poll url, it tells you status. then once its done, it returns the mine confirmation.
+	-or you could also combine it with a callback url where you would post the mine result to. Just to make it async and not timeout. For the toy example here it suffices though with the current setup,
+	but the other stuff could be interesting exercise as well. 
